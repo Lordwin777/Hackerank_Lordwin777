@@ -7,64 +7,56 @@ string rtrim(const string &);
 vector<string> split(const string &);
 
 /*
- * Complete the 'breakingRecords' function below.
+ * Complete the 'divisibleSumPairs' function below.
  *
- * The function is expected to return an INTEGER_ARRAY.
- * The function accepts INTEGER_ARRAY scores as parameter.
+ * The function is expected to return an INTEGER.
+ * The function accepts following parameters:
+ *  1. INTEGER n
+ *  2. INTEGER k
+ *  3. INTEGER_ARRAY ar
  */
 
-vector<int> breakingRecords(vector<int> scores) {
-    int maxScore = scores[0];
-    int minScore = scores[0];
-    int maxBreaks = 0;
-    int minBreaks = 0;
-
-    for (size_t i = 1; i < scores.size(); ++i) {
-        if (scores[i] > maxScore) {
-            maxScore = scores[i];
-            maxBreaks++;
-        } else if (scores[i] < minScore) {
-            minScore = scores[i];
-            minBreaks++;
+int divisibleSumPairs(int n, int k, vector<int> ar) {
+    int count = 0;
+    for (int i = 0; i < n - 1; ++i) {
+        for (int j = i + 1; j < n; ++j) {
+            if ((ar[i] + ar[j]) % k == 0) {
+                count++;
+            }
         }
     }
-
-    return {maxBreaks, minBreaks};
+    return count;
 }
 
 int main()
 {
     ofstream fout(getenv("OUTPUT_PATH"));
 
-    string n_temp;
-    getline(cin, n_temp);
+    string first_multiple_input_temp;
+    getline(cin, first_multiple_input_temp);
 
-    int n = stoi(ltrim(rtrim(n_temp)));
+    vector<string> first_multiple_input = split(rtrim(first_multiple_input_temp));
 
-    string scores_temp_temp;
-    getline(cin, scores_temp_temp);
+    int n = stoi(first_multiple_input[0]);
 
-    vector<string> scores_temp = split(rtrim(scores_temp_temp));
+    int k = stoi(first_multiple_input[1]);
 
-    vector<int> scores(n);
+    string ar_temp_temp;
+    getline(cin, ar_temp_temp);
+
+    vector<string> ar_temp = split(rtrim(ar_temp_temp));
+
+    vector<int> ar(n);
 
     for (int i = 0; i < n; i++) {
-        int scores_item = stoi(scores_temp[i]);
+        int ar_item = stoi(ar_temp[i]);
 
-        scores[i] = scores_item;
+        ar[i] = ar_item;
     }
 
-    vector<int> result = breakingRecords(scores);
+    int result = divisibleSumPairs(n, k, ar);
 
-    for (size_t i = 0; i < result.size(); i++) {
-        fout << result[i];
-
-        if (i != result.size() - 1) {
-            fout << " ";
-        }
-    }
-
-    fout << "\n";
+    fout << result << "\n";
 
     fout.close();
 
